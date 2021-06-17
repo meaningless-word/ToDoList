@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ToDoList.BLL.Exceptions
+namespace ToDoList.Common.Exceptions
 {
     public class PropertyIsNotValid : Exception
     {

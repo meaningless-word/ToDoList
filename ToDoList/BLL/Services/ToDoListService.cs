@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ToDoList.BLL.Common;
-using ToDoList.BLL.Exceptions;
+using ToDoList.Common.Exceptions;
 using ToDoList.BLL.Models;
 using ToDoList.DAL.Common;
 using ToDoList.DAL.Entities;

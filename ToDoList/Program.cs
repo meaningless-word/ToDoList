@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using ToDoList.BLL.Models;
 using ToDoList.Common;
 
@@ -6,8 +7,9 @@ namespace ToDoList
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
+            await DependencyResolver.GetTypeDAL();
             var toDoListService = DependencyResolver.toDoListService;
 
             toDoListService.Create(new ItemCreation
