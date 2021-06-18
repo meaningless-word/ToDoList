@@ -6,8 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DAL\TextFile\" />
-    <Folder Include="DAL\DB\" />
     <Folder Include="PLL\" />
   </ItemGroup>
 
