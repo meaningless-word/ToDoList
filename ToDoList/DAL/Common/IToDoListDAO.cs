@@ -34,10 +34,17 @@ namespace ToDoList.DAL.Common
         ToDoListEntity GetByName(string name);
 
         /// <summary>
+        /// Получение задачи по id
+        /// </summary>
+        /// <param name="id">идентификатор</param>
+        /// <returns>Задача</returns>
+        ToDoListEntity GetById(int id);
+
+        /// <summary>
         /// Выставляет признак исполнения задачи
         /// </summary>
         /// <param name="id">Id задачи</param>
         /// <param name="check">Признак исполнения задачи</param>
         int CheckItem(int id, bool check);
-    }
+	}
 }

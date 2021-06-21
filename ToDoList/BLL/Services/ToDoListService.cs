@@ -79,9 +79,11 @@ namespace ToDoList.BLL.Services
         /// Возврат списка задач
         /// </summary>
         /// <returns>Список задач</returns>
-        public IEnumerable<ToDoListEntity> GetAll()
+        public IEnumerable<ItemDelivered> GetAll()
         {
-            return _toDoListDAL.GetAll();
+            // подумал, что правильней будет, если на PLL не вытаскивать модель из DAL, а использовать только модели BLL, поэтому создал полное отражение ToDoListEntity в ItemDelivered
+            //return _toDoListDAL.GetAll();
+            return _toDoListDAL.GetAll().Select(x => new ItemDelivered() { Id = x.Id, Name = x.Name, Text = x.Text, Priority = x.Priority, Checked = x.Checked }).ToList();
         }
 
         /// <summary>
@@ -89,7 +91,7 @@ namespace ToDoList.BLL.Services
         /// </summary>
         /// <param name="asc">Параметр сортировки, по умолчанию - по возрастанию</param>
         /// <returns>Отсортированный список задач</returns>
-        public IEnumerable<ToDoListEntity> GetAllSortedByPriority(bool asc = true)
+        public IEnumerable<ItemDelivered> GetAllSortedByPriority(bool asc = true)
         {
             if (asc)
                 return GetAll().OrderBy(item => item.Priority);
@@ -98,18 +100,55 @@ namespace ToDoList.BLL.Services
         }
 
         /// <summary>
+        /// Получение задачи по Id
+        /// </summary>
+        /// <param name="name">Имя задачи</param>
+        /// <returns>Задача</returns>
+        public ItemDelivered GetById(int id)
+        {
+            var item = _toDoListDAL.GetById(id);
+
+            if (item == null)
+                throw new InfoIsNotValid();
+
+            //return item;
+            return new ItemDelivered() { Id = item.Id, Name = item.Name, Text = item.Text, Priority = item.Priority, Checked = item.Checked };
+        }
+
+        /// <summary>
         /// Получение задачи по имени
         /// </summary>
         /// <param name="name">Имя задачи</param>
         /// <returns>Задача</returns>
-        public ToDoListEntity GetByName(string name)
+        public ItemDelivered GetByName(string name)
         {
             var item = _toDoListDAL.GetByName(name);
 
             if (item == null)
                 throw new InfoIsNotValid();
 
-            return item;
+            //return item;
+            return new ItemDelivered() { Id = item.Id, Name = item.Name, Text = item.Text, Priority = item.Priority, Checked = item.Checked };
+        }
+
+        /// <summary>
+        /// Получение задачи по фрагменту имени
+        /// </summary>
+        /// <param name="partOfName">часть имени задачи</param>
+        /// <returns>список задач, содержащих фрагмент в наименовании</returns>
+        public IEnumerable<ItemDelivered> GetByPartOfName(string partOfName)
+        {
+            return _toDoListDAL.GetAll().Where(x => x.Name.Contains(partOfName)).Select(x => new ItemDelivered() { Id = x.Id, Name = x.Name, Text = x.Text, Priority = x.Priority, Checked = x.Checked }).ToList();
+        }
+
+        /// <summary>
+        /// Получение задачи по фрагменту текста
+        /// </summary>
+        /// <param name="partOfText">часть тексте задачи</param>
+        /// <returns>список задач, содержащих фрагмент в тексте</returns>
+        public IEnumerable<ItemDelivered> GetByPartOfText(string partOfText)
+        {
+            return _toDoListDAL.GetAll().Where(x => x.Name.Contains(partOfText)).Select(x => new ItemDelivered() { Id = x.Id, Name = x.Name, Text = x.Text, Priority = x.Priority, Checked = x.Checked }).ToList();
         }
 
         /// <summary>

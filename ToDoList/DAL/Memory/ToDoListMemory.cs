@@ -73,7 +73,7 @@ namespace ToDoList.DAL.Memory
         /// </summary>
         /// <param name="id">Имя задачи</param>
         /// <returns>Задача</returns>
-        private ToDoListEntity GetById(int id)
+        public ToDoListEntity GetById(int id)
         {
             return ToDoListDAO.toDoList.FirstOrDefault(item => item.Id == id);
         }
@@ -86,5 +86,5 @@ namespace ToDoList.DAL.Memory
         {
             return (ToDoListDAO.toDoList.Count == 0) ? 0 : ToDoListDAO.toDoList.Max(item => item.Id);
         }
-    }
+	}
 }
