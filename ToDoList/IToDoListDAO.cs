@@ -12,7 +12,7 @@ namespace ToDoList.DAL.Common
         /// Создание задачи в листе
         /// </summary>
         /// <param name="toDoListEntity">Сущность пользователя</param>
-        int Create(ToDoListEntity toDoListEntity);
+        int Create(Job toDoListEntity);
 
         /// <summary>
         /// Удаление задачи в листе по id
@@ -24,21 +24,21 @@ namespace ToDoList.DAL.Common
         /// Возврат списка задач
         /// </summary>
         /// <returns>Список задач</returns>
-        IEnumerable<ToDoListEntity> GetAll();
+        IEnumerable<Job> GetAll();
 
         /// <summary>
         /// Получение задачи по имени
         /// </summary>
         /// <param name="name">Имя задачи</param>
         /// <returns>Задача</returns>
-        ToDoListEntity GetByName(string name);
+        Job GetByName(string name);
 
         /// <summary>
         /// Получение задачи по id
         /// </summary>
         /// <param name="id">идентификатор</param>
         /// <returns>Задача</returns>
-        ToDoListEntity GetById(int id);
+        Job GetById(int id);
 
         /// <summary>
         /// Выставляет признак исполнения задачи

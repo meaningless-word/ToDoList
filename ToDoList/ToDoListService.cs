@@ -51,7 +51,7 @@ namespace ToDoList.BLL.Services
             if (itemCreation.Priority < 0)
                 throw new PropertyIsNotValid();
 
-            var toDoListEntity = new ToDoListEntity()
+            var toDoListEntity = new Job()
             {
                 Name = itemCreation.Name,
                 Text = itemCreation.Text,

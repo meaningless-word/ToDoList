@@ -11,6 +11,6 @@ namespace ToDoList.DAL.Memory
         /// <summary>
         /// Список задач
         /// </summary>
-        public static List<ToDoListEntity> toDoList = new List<ToDoListEntity>();
+        public static List<Job> toDoList = new List<Job>();
     }
 }

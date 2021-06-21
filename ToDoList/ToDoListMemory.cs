@@ -14,7 +14,7 @@ namespace ToDoList.DAL.Memory
         /// Создание задачи в листе
         /// </summary>
         /// <param name="toDoListEntity">Сущность пользователя</param>
-        public int Create(ToDoListEntity toDoListEntity)
+        public int Create(Job toDoListEntity)
         {
             toDoListEntity.Id = GetLastId() + 1;
             toDoListEntity.Checked = false;
@@ -39,7 +39,7 @@ namespace ToDoList.DAL.Memory
         /// Возврат списка задач
         /// </summary>
         /// <returns>Список задач</returns>
-        public IEnumerable<ToDoListEntity> GetAll()
+        public IEnumerable<Job> GetAll()
         {
             return ToDoListDAO.toDoList.ToList();
         }
@@ -49,7 +49,7 @@ namespace ToDoList.DAL.Memory
         /// </summary>
         /// <param name="name">Имя задачи</param>
         /// <returns>Задача</returns>
-        public ToDoListEntity GetByName(string name)
+        public Job GetByName(string name)
         {
             return ToDoListDAO.toDoList.FirstOrDefault(item => item.Name == name);
         }
@@ -73,7 +73,7 @@ namespace ToDoList.DAL.Memory
         /// </summary>
         /// <param name="id">Имя задачи</param>
         /// <returns>Задача</returns>
-        public ToDoListEntity GetById(int id)
+        public Job GetById(int id)
         {
             return ToDoListDAO.toDoList.FirstOrDefault(item => item.Id == id);
         }

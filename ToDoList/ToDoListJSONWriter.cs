@@ -19,7 +19,7 @@ namespace ToDoList.DAL.Memory
         {
             using (FileStream fs = new FileStream(Config.jsonPath, FileMode.OpenOrCreate))
             {
-                ToDoListDAO.toDoList = await System.Text.Json.JsonSerializer.DeserializeAsync<List<ToDoListEntity>>(fs);
+                ToDoListDAO.toDoList = await System.Text.Json.JsonSerializer.DeserializeAsync<List<Job>>(fs);
             }
         }
 
@@ -30,7 +30,7 @@ namespace ToDoList.DAL.Memory
         {
             using (FileStream fs = new FileStream(Config.jsonPath, FileMode.OpenOrCreate))
             {
-                await System.Text.Json.JsonSerializer.SerializeAsync<List<ToDoListEntity>>(fs, ToDoListDAO.toDoList);
+                await System.Text.Json.JsonSerializer.SerializeAsync<List<Job>>(fs, ToDoListDAO.toDoList);
             }
         }
     }

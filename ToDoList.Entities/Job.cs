@@ -1,9 +1,9 @@
-﻿namespace ToDoList.DAL.Entities
+﻿namespace ToDoList.Entities
 {
     /// <summary>
     /// Сущность задачи
     /// </summary>
-    public class ToDoListEntity
+    public class Job
     {
         /// <summary>
         /// Id задачи
