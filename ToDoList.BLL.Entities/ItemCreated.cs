@@ -1,15 +1,10 @@
-﻿namespace ToDoList.Entities
+﻿namespace ToDoList.BLL.Entities
 {
 	/// <summary>
-	/// Сущность задачи
+	/// Вводимые параметры из UI
 	/// </summary>
-	public class Job
+	public class ItemCreated
 	{
-		/// <summary>
-		/// Id задачи
-		/// </summary>
-		public int Id { get; set; }
-
 		/// <summary>
 		/// Имя задачи
 		/// </summary>
@@ -24,10 +19,5 @@
 		/// Описание задачи
 		/// </summary>
 		public string Text { get; set; }
-
-		/// <summary>
-		/// Признак исполнения
-		/// </summary>
-		public bool Checked { get; set; }
 	}
 }

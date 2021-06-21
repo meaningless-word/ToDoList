@@ -1,9 +1,6 @@
-﻿namespace ToDoList.Entities
+﻿namespace ToDoList.BLL.Entities
 {
-	/// <summary>
-	/// Сущность задачи
-	/// </summary>
-	public class Job
+	public class ItemDelivered
 	{
 		/// <summary>
 		/// Id задачи
