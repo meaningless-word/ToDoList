@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,7 +6,37 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="PLL\Common\" />
+    <Compile Remove="Config.cs" />
+    <Compile Remove="DependencyResolver.cs" />
+    <Compile Remove="ErrorMessageView.cs" />
+    <Compile Remove="IMenu.cs" />
+    <Compile Remove="InfoIsNotValid.cs" />
+    <Compile Remove="ItemCreation.cs" />
+    <Compile Remove="ItemDelivered.cs" />
+    <Compile Remove="IToDoListBLL.cs" />
+    <Compile Remove="IToDoListBLLWriter.cs" />
+    <Compile Remove="IToDoListDAO.cs" />
+    <Compile Remove="IToDoListWriter.cs" />
+    <Compile Remove="Job.cs" />
+    <Compile Remove="JSONException.cs" />
+    <Compile Remove="MainMenu.cs" />
+    <Compile Remove="MenuView.cs" />
+    <Compile Remove="PropertyIsNotValid.cs" />
+    <Compile Remove="TaskCreationView.cs" />
+    <Compile Remove="TaskFindingMenu.cs" />
+    <Compile Remove="TaskGetIdentificationView.cs" />
+    <Compile Remove="TaskGetNameView.cs" />
+    <Compile Remove="TaskListMenu.cs" />
+    <Compile Remove="TaskProcessingMenu.cs" />
+    <Compile Remove="TasksView.cs" />
+    <Compile Remove="ToDoListDAO.cs" />
+    <Compile Remove="ToDoListJSONWriter.cs" />
+    <Compile Remove="ToDoListMemory.cs" />
+    <Compile Remove="ToDoListService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ToDoList.IOC\ToDoList.IOC.csproj" />
   </ItemGroup>
 
 </Project>
