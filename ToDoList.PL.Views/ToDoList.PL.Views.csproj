@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ToDoList.BLL.Entities\ToDoList.BLL.Entities.csproj" />
+    <ProjectReference Include="..\ToDoList.PL.Interface\ToDoList.PL.Interface.csproj" />
+  </ItemGroup>
+
+</Project>
