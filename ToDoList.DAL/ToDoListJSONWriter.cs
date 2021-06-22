@@ -30,10 +30,7 @@ namespace ToDoList.DAL
 		/// </summary>
 		public async Task SetAllToFile(string filePath)
 		{
-			FileInfo f = new FileInfo(filePath);
-			f.Delete();
-
-			using (FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate))
+			using (FileStream fs = new FileStream(filePath, FileMode.Create))
 			{
 				await System.Text.Json.JsonSerializer.SerializeAsync<List<Job>>(fs, MemoryDAO.jobs);
 			}
