@@ -6,11 +6,18 @@ namespace ToDoList.DAL
 	/// <summary>
 	/// Объект под список задач
 	/// </summary>
-	public static class MemoryDAO
+	public class MemoryDAO
 	{
 		/// <summary>
 		/// Список задач
 		/// </summary>
-		public static List<Job> jobs = new List<Job>();
+		public List<Job> jobs;
+		
+		public MemoryDAO()
+		{
+			jobs = new List<Job>();
+		}
+
+
 	}
 }

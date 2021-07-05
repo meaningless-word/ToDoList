@@ -10,6 +10,13 @@ namespace ToDoList.DAL
 	/// </summary>
 	public class JobDAO : IJobDAO
 	{
+		private MemoryDAO memoryDAO;
+
+		public JobDAO()
+		{
+			memoryDAO = new MemoryDAO();
+		}
+
 		/// <summary>
 		/// Создание задачи в листе
 		/// </summary>
@@ -19,7 +26,7 @@ namespace ToDoList.DAL
 			job.Id = GetLastId() + 1;
 			job.Checked = false;
 
-			MemoryDAO.jobs.Add(job);
+			memoryDAO.jobs.Add(job);
 
 			return job.Id;
 		}
@@ -30,7 +37,7 @@ namespace ToDoList.DAL
 		/// <param name="id">Id задачи</param>
 		public int Delete(int id)
 		{
-			MemoryDAO.jobs.Remove(GetById(id));
+			memoryDAO.jobs.Remove(GetById(id));
 
 			return id;
 		}
@@ -41,7 +48,7 @@ namespace ToDoList.DAL
 		/// <returns>Список задач</returns>
 		public IEnumerable<Job> GetAll()
 		{
-			return MemoryDAO.jobs.ToList();
+			return memoryDAO.jobs.ToList();
 		}
 
 		/// <summary>
@@ -51,7 +58,7 @@ namespace ToDoList.DAL
 		/// <returns>Задача</returns>
 		public Job GetByName(string name)
 		{
-			return MemoryDAO.jobs.FirstOrDefault(item => item.Name == name);
+			return memoryDAO.jobs.FirstOrDefault(item => item.Name == name);
 		}
 
 		/// <summary>
@@ -75,7 +82,7 @@ namespace ToDoList.DAL
 		/// <returns>Задача</returns>
 		public Job GetById(int id)
 		{
-			return MemoryDAO.jobs.FirstOrDefault(item => item.Id == id);
+			return memoryDAO.jobs.FirstOrDefault(item => item.Id == id);
 		}
 
 		/// <summary>
@@ -84,7 +91,7 @@ namespace ToDoList.DAL
 		/// <returns>Номер последней задачи в списке</returns>
 		private int GetLastId()
 		{
-			return (MemoryDAO.jobs.Count == 0) ? 0 : MemoryDAO.jobs.Max(item => item.Id);
+			return (memoryDAO.jobs.Count == 0) ? 0 : memoryDAO.jobs.Max(item => item.Id);
 		}
 	}
 }

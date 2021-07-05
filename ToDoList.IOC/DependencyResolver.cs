@@ -1,10 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ToDoList.BLL;
 using ToDoList.BLL.Interface;
 using ToDoList.DAL;
 using ToDoList.DAL.Interface;
+using ToDoList.Entities.Configuration;
 using ToDoList.Exceptions;
 using ToDoList.Settings;
 
@@ -13,22 +15,44 @@ namespace ToDoList.IOC
 	/// <summary>
 	/// Объект для создания бизнес-логики
 	/// </summary>
-	public static class DependencyResolver
+	public class DependencyResolver
 	{
 		/// <summary>
 		/// Объект под DAO
 		/// </summary>
-		private static IJobDAO jobDAO { get; } = new JobDAO();
+		private IJobDAO jobDAO;
+
+		/// <summary>
+		/// Объект под бизнес-логику
+		/// </summary>
+		public IToDoListLogic toDoListLogic { get; } 
+		
+		public DependencyResolver(ConfigurationDAL configurationDAL)
+		{
+
+			jobDAO = GetJobDAOByType(configurationDAL.type);
+			toDoListLogic = new ToDoListLogic(jobDAO);
+		}
+
+		private IJobDAO GetJobDAOByType(TypeOfDAO typeOfDAO)
+		{
+			switch (typeOfDAO)
+			{
+				case TypeOfDAO.File:
+					return null;
+				case TypeOfDAO.Memory:
+					return new JobDAO();
+				default:
+					throw new ArgumentException("Can't resolve type for JobDAO");
+			}
+		}
 
 		/// <summary>
 		/// Объект под райтер
 		/// </summary>
 		private static IToDoListWriter toDoListJSONWriter { get; } = new ToDoListJSONWriter();
 
-		/// <summary>
-		/// Объект под бизнес-логику
-		/// </summary>
-		public static IToDoListLogic toDoListLogic { get; } = new ToDoListLogic(jobDAO);
+
 
 		/// <summary>
 		/// Считывает значение конфиги, и если это JSON, то считывает записанные в файле JSON значения
