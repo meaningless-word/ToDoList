@@ -30,14 +30,8 @@ namespace ToDoList.PL
 
 			var dr = new DependencyResolver(configurationDAL);
 
-			await DependencyResolver.GetTypeDAL();
-			IToDoListLogic toDoListLogic = dr.toDoListLogic;
-
-			MainMenu mainMenu = new MainMenu(toDoListLogic);
-
+			MainMenu mainMenu = new MainMenu(dr.toDoListLogic);
 			mainMenu.Choose();
-
-			await DependencyResolver.SetTypeDAL();
 		}
 	}
 }

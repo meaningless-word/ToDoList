@@ -1,15 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ToDoList.DAL.Interface;
 using ToDoList.Entities;
 
 namespace ToDoList.DAL
 {
+	// предполагается, что эта реализация класса позволяет хранить данные в List'е
+	// для других вариентов, наверное, пишется другой класс
 	/// <summary>
 	/// Объект под список задач
 	/// </summary>
 	public class JobDAO : IJobDAO
 	{
+		/// <summary>
+		/// хранилище данных
+		/// </summary>
 		private MemoryDAO memoryDAO;
 
 		public JobDAO()
@@ -92,6 +98,16 @@ namespace ToDoList.DAL
 		private int GetLastId()
 		{
 			return (memoryDAO.jobs.Count == 0) ? 0 : memoryDAO.jobs.Max(item => item.Id);
+		}
+
+		public async Task PullData(string baseLocation)
+		{
+			await memoryDAO.GetAllFromFile(baseLocation);
+		}
+
+		public async Task PushData(string baseLocation)
+		{
+			await memoryDAO.SetAllToFile(baseLocation);
 		}
 	}
 }

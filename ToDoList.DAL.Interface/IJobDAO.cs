@@ -46,5 +46,7 @@ namespace ToDoList.DAL.Interface
 		/// <param name="id">Id задачи</param>
 		/// <param name="check">Признак исполнения задачи</param>
 		int CheckItem(int id, bool check);
+
+		//async Task PullData(string baseLocation);
 	}
 }

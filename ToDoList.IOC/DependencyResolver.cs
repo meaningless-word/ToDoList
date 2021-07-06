@@ -1,14 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.Text.Json;
-using System.Threading.Tasks;
 using ToDoList.BLL;
 using ToDoList.BLL.Interface;
 using ToDoList.DAL;
 using ToDoList.DAL.Interface;
 using ToDoList.Entities.Configuration;
-using ToDoList.Exceptions;
-using ToDoList.Settings;
 
 namespace ToDoList.IOC
 {
@@ -30,28 +26,28 @@ namespace ToDoList.IOC
 		public DependencyResolver(ConfigurationDAL configurationDAL)
 		{
 
-			jobDAO = GetJobDAOByType(configurationDAL.type);
+			jobDAO = GetJobDAOByType(configurationDAL);
 			toDoListLogic = new ToDoListLogic(jobDAO);
 		}
 
-		private IJobDAO GetJobDAOByType(TypeOfDAO typeOfDAO)
+		private IJobDAO GetJobDAOByType(ConfigurationDAL configurationDAL)
 		{
-			switch (typeOfDAO)
+			switch (configurationDAL.type)
 			{
 				case TypeOfDAO.File:
 					return null;
-				case TypeOfDAO.Memory:
+				case TypeOfDAO.JSON:
+					string fileFullPth = Path.Combine(configurationDAL.filePath.Length == 0 ? Directory.GetParent(AppContext.BaseDirectory).FullName : configurationDAL.filePath, configurationDAL.fileName);
 					return new JobDAO();
 				default:
 					throw new ArgumentException("Can't resolve type for JobDAO");
 			}
 		}
-
+/*
 		/// <summary>
 		/// Объект под райтер
 		/// </summary>
 		private static IToDoListWriter toDoListJSONWriter { get; } = new ToDoListJSONWriter();
-
 
 
 		/// <summary>
@@ -87,5 +83,6 @@ namespace ToDoList.IOC
 				throw new JSONException();
 			}
 		}
+*/
 	}
 }

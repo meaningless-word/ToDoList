@@ -3,6 +3,6 @@
 	public enum TypeOfDAO
 	{
 		File = 0,
-		Memory = 1
+		JSON = 1
 	}
 }
