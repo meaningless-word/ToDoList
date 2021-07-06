@@ -2,7 +2,6 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using ToDoList.BLL.Interface;
 using ToDoList.Entities.Configuration;
 using ToDoList.IOC;
 using ToDoList.PL.Menus;

@@ -10,7 +10,7 @@ namespace ToDoList.DAL
 	/// <summary>
 	/// Объект под список задач
 	/// </summary>
-	public class MemoryDAO : IToDoListWriter
+	public class MemoryDAO : IJobDAO
 	{
 		/// <summary>
 		/// Список задач
@@ -22,10 +22,15 @@ namespace ToDoList.DAL
 			jobs = new List<Job>();
 		}
 
+		public int CheckItem(int id, bool check)
+		{
+			throw new System.NotImplementedException();
+		}
+
 		/// <summary>
 		/// Считывание списка задач из файла
 		/// </summary>
-		public async Task GetAllFromFile(string filePath)
+		public async Task Connect(string filePath)
 		{
 			if (File.Exists(filePath))
 			{
@@ -36,10 +41,20 @@ namespace ToDoList.DAL
 			}
 		}
 
+		public int Create(Job job)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public int Delete(int id)
+		{
+			throw new System.NotImplementedException();
+		}
+
 		/// <summary>
 		/// Записывание списка задач в файл
 		/// </summary>
-		public async Task SetAllToFile(string filePath)
+		public async Task Disconnect(string filePath)
 		{
 			using (FileStream fs = new FileStream(filePath, FileMode.Create))
 			{
@@ -47,5 +62,19 @@ namespace ToDoList.DAL
 			}
 		}
 
+		public IEnumerable<Job> GetAll()
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public Job GetById(int id)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public Job GetByName(string name)
+		{
+			throw new System.NotImplementedException();
+		}
 	}
 }

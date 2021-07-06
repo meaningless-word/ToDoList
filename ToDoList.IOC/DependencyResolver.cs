@@ -13,10 +13,7 @@ namespace ToDoList.IOC
 	/// </summary>
 	public class DependencyResolver
 	{
-		/// <summary>
-		/// Объект под DAO
-		/// </summary>
-		private IJobDAO jobDAO;
+		private IBaseRepository baseRepository;
 
 		/// <summary>
 		/// Объект под бизнес-логику
@@ -25,20 +22,19 @@ namespace ToDoList.IOC
 		
 		public DependencyResolver(ConfigurationDAL configurationDAL)
 		{
-
-			jobDAO = GetJobDAOByType(configurationDAL);
-			toDoListLogic = new ToDoListLogic(jobDAO);
+			baseRepository = GetBaseRepositoryByType(configurationDAL);
+			toDoListLogic = new ToDoListLogic(baseRepository.jobDAO);
 		}
 
-		private IJobDAO GetJobDAOByType(ConfigurationDAL configurationDAL)
+		private IBaseRepository GetBaseRepositoryByType(ConfigurationDAL configurationDAL)
 		{
+			string fileFullPth = Path.Combine(configurationDAL.filePath.Length == 0 ? Directory.GetParent(AppContext.BaseDirectory).FullName : configurationDAL.filePath, configurationDAL.fileName);
 			switch (configurationDAL.type)
 			{
-				case TypeOfDAO.File:
-					return null;
+				case TypeOfDAO.SQLite:
+					return new SQLiteBaseRepository(fileFullPth);
 				case TypeOfDAO.JSON:
-					string fileFullPth = Path.Combine(configurationDAL.filePath.Length == 0 ? Directory.GetParent(AppContext.BaseDirectory).FullName : configurationDAL.filePath, configurationDAL.fileName);
-					return new JobDAO();
+					return new MemoryBaseRepository(fileFullPth);
 				default:
 					throw new ArgumentException("Can't resolve type for JobDAO");
 			}

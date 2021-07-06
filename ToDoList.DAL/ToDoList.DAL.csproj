@@ -5,6 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="BaseRepository.cs~RF1f32236a.TMP" />
+    <None Remove="SQLiteContext.cs~RF1f44a8b0.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.7" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ToDoList.DAL.Interface\ToDoList.DAL.Interface.csproj" />
     <ProjectReference Include="..\ToDoList.Entities\ToDoList.Entities.csproj" />
   </ItemGroup>

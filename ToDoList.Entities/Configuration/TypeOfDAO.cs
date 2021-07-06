@@ -2,7 +2,7 @@
 {
 	public enum TypeOfDAO
 	{
-		File = 0,
+		SQLite = 0,
 		JSON = 1
 	}
 }

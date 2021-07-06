@@ -100,14 +100,14 @@ namespace ToDoList.DAL
 			return (memoryDAO.jobs.Count == 0) ? 0 : memoryDAO.jobs.Max(item => item.Id);
 		}
 
-		public async Task PullData(string baseLocation)
-		{
-			await memoryDAO.GetAllFromFile(baseLocation);
-		}
+		//public async Task PullData(string baseLocation)
+		//{
+		//	await memoryDAO.GetAllFromFile(baseLocation);
+		//}
 
-		public async Task PushData(string baseLocation)
-		{
-			await memoryDAO.SetAllToFile(baseLocation);
-		}
+		//public async Task PushData(string baseLocation)
+		//{
+		//	await memoryDAO.SetAllToFile(baseLocation);
+		//}
 	}
 }
