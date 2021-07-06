@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using ToDoList.Entities;
 
 namespace ToDoList.DAL.Interface
@@ -47,6 +48,7 @@ namespace ToDoList.DAL.Interface
 		/// <param name="check">Признак исполнения задачи</param>
 		int CheckItem(int id, bool check);
 
-		//async Task PullData(string baseLocation);
+		Task PullData(string baseLocation);
+		Task PushData(string baseLocation);
 	}
 }

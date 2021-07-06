@@ -1,4 +1,6 @@
-﻿namespace ToDoList.BLL.Entities
+﻿using System;
+
+namespace ToDoList.BLL.Entities
 {
 	public class ItemDelivered
 	{
@@ -26,5 +28,9 @@
 		/// Признак исполнения
 		/// </summary>
 		public bool Checked { get; set; }
+		/// <summary>
+		/// Дата истечения срока исполнения
+		/// </summary>
+		public DateTime ExpiredDate { get; set; }
 	}
 }

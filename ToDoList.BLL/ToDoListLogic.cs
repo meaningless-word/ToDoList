@@ -43,11 +43,15 @@ namespace ToDoList.BLL
 			if (itemCreated.Priority < 0)
 				throw new PropertyIsNotValidException();
 
+			if (itemCreated.ExpireDate < DateTime.Now)
+				throw new ExpiredDateException();
+
 			var job = new Job()
 			{
 				Name = itemCreated.Name,
 				Text = itemCreated.Text,
-				Priority = itemCreated.Priority
+				Priority = itemCreated.Priority,
+				ExpireDate = itemCreated.ExpireDate
 			};
 
 			if (_jobDAL.Create(job) == 0)
@@ -73,7 +77,7 @@ namespace ToDoList.BLL
 		/// <returns>Список задач</returns>
 		public IEnumerable<ItemDelivered> GetAll()
 		{
-			return _jobDAL.GetAll().Select(x => new ItemDelivered() { Id = x.Id, Name = x.Name, Text = x.Text, Priority = x.Priority, Checked = x.Checked }).ToList();
+			return _jobDAL.GetAll().Select(x => new ItemDelivered() { Id = x.Id, Name = x.Name, Text = x.Text, Priority = x.Priority, Checked = x.Checked, ExpiredDate = x.ExpireDate }).ToList();
 		}
 
 		/// <summary>
@@ -84,9 +88,9 @@ namespace ToDoList.BLL
 		public IEnumerable<ItemDelivered> GetAllSortedByPriority(bool asc = true)
 		{
 			if (asc)
-				return GetAll().OrderBy(item => item.Priority);
+				return GetAll().OrderBy(item => item.ExpiredDate).ThenBy(item => item.Priority);
 
-			return GetAll().OrderByDescending(item => item.Priority);
+			return GetAll().OrderByDescending(item => item.ExpiredDate).ThenByDescending(item => item.Priority);
 		}
 
 		/// <summary>
@@ -101,7 +105,7 @@ namespace ToDoList.BLL
 			if (item == null)
 				throw new InfoIsNotValidException();
 
-			return new ItemDelivered() { Id = item.Id, Name = item.Name, Text = item.Text, Priority = item.Priority, Checked = item.Checked };
+			return new ItemDelivered() { Id = item.Id, Name = item.Name, Text = item.Text, Priority = item.Priority, Checked = item.Checked, ExpiredDate = item.ExpireDate };
 		}
 
 		/// <summary>
@@ -116,7 +120,7 @@ namespace ToDoList.BLL
 			if (item == null)
 				throw new InfoIsNotValidException();
 
-			return new ItemDelivered() { Id = item.Id, Name = item.Name, Text = item.Text, Priority = item.Priority, Checked = item.Checked };
+			return new ItemDelivered() { Id = item.Id, Name = item.Name, Text = item.Text, Priority = item.Priority, Checked = item.Checked, ExpiredDate = item.ExpireDate };
 		}
 
 		/// <summary>
@@ -126,7 +130,7 @@ namespace ToDoList.BLL
 		/// <returns>список задач, содержащих фрагмент в наименовании</returns>
 		public IEnumerable<ItemDelivered> GetByPartOfName(string partOfName)
 		{
-			return _jobDAL.GetAll().Where(x => x.Name.Contains(partOfName)).Select(x => new ItemDelivered() { Id = x.Id, Name = x.Name, Text = x.Text, Priority = x.Priority, Checked = x.Checked }).ToList();
+			return _jobDAL.GetAll().Where(x => x.Name.Contains(partOfName)).Select(x => new ItemDelivered() { Id = x.Id, Name = x.Name, Text = x.Text, Priority = x.Priority, Checked = x.Checked, ExpiredDate = x.ExpireDate }).ToList();
 		}
 
 		/// <summary>
@@ -136,7 +140,7 @@ namespace ToDoList.BLL
 		/// <returns>список задач, содержащих фрагмент в тексте</returns>
 		public IEnumerable<ItemDelivered> GetByPartOfText(string partOfText)
 		{
-			return _jobDAL.GetAll().Where(x => x.Text.Contains(partOfText)).Select(x => new ItemDelivered() { Id = x.Id, Name = x.Name, Text = x.Text, Priority = x.Priority, Checked = x.Checked }).ToList();
+			return _jobDAL.GetAll().Where(x => x.Text.Contains(partOfText)).Select(x => new ItemDelivered() { Id = x.Id, Name = x.Name, Text = x.Text, Priority = x.Priority, Checked = x.Checked, ExpiredDate = x.ExpireDate }).ToList();
 		}
 
 		/// <summary>

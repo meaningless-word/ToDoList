@@ -45,6 +45,7 @@ namespace ToDoList.PL.Menus
 								Console.WriteLine("задача добавлена");
 							}
 							catch (PropertyIsNotValidException) { new ErrorMessageView("Не все обязательные поля заполнены").Show(); }
+							catch (ExpiredDateException) { new ErrorMessageView("Указана дата ").Show(); }
 							catch (Exception ex) { new ErrorMessageView(ex.Message).Show() ; }
 							break;
 						}
