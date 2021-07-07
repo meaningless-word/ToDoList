@@ -46,5 +46,10 @@ namespace ToDoList.DAL.Interface
 		/// <param name="id">Id задачи</param>
 		/// <param name="check">Признак исполнения задачи</param>
 		int CheckItem(int id, bool check);
+
+		/// <summary>
+		/// Выполняет сохранение данных
+		/// </summary>
+		void Save();
 	}
 }

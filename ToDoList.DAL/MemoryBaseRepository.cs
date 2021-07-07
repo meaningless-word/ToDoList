@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,16 +21,15 @@ namespace ToDoList.DAL
 			db = new MemoryContext(baseLocation);
 			_jobDAO = new MemoryJobDAO(db);
 		}
-		public void Save()
-		{
-			throw new NotImplementedException();
-		}
 
 		public void Dispose()
 		{
 			throw new NotImplementedException();
 		}
 
-
+		public void Save()
+		{
+			_jobDAO.Save();
+		}
 	}
 }

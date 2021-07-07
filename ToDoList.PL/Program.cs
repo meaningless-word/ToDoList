@@ -31,6 +31,9 @@ namespace ToDoList.PL
 
 			MainMenu mainMenu = new MainMenu(dr.toDoListLogic);
 			mainMenu.Choose();
+
+			// контрольное сохранение при выходе из программы 
+			dr.toDoListLogic.Save();
 		}
 	}
 }

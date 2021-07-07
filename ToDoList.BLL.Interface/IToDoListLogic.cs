@@ -67,5 +67,10 @@ namespace ToDoList.BLL.Interface
 		/// <param name="id">Id задачи</param>
 		/// <param name="check">Признак исполнения задачи</param>
 		void CheckItem(int id, bool check);
+
+		/// <summary>
+		/// Обеспечение сохранения данных
+		/// </summary>
+		void Save();
 	}
 }

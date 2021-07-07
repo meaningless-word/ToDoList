@@ -171,5 +171,13 @@ namespace ToDoList.BLL
 
 			return true;
 		}
+
+		/// <summary>
+		/// Обеспечение сохранения данных
+		/// </summary>
+		public void Save()
+		{
+			_jobDAL.Save();
+		}
 	}
 }

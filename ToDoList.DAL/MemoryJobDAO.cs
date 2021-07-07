@@ -1,26 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using ToDoList.DAL.Interface;
 using ToDoList.Entities;
 
 namespace ToDoList.DAL
 {
-	// предполагается, что эта реализация класса позволяет хранить данные в List'е
-	// для других вариентов, наверное, пишется другой класс
-	/// <summary>
-	/// Объект под список задач
-	/// </summary>
-	public class JobDAO : IJobDAO
+	public class MemoryJobDAO : IJobDAO
 	{
 		/// <summary>
 		/// хранилище данных
 		/// </summary>
-		private MemoryDAO memoryDAO;
+		private MemoryContext db;
 
-		public JobDAO()
+		public MemoryJobDAO(MemoryContext db)
 		{
-			memoryDAO = new MemoryDAO();
+			this.db = db;
 		}
 
 		/// <summary>
@@ -31,9 +27,7 @@ namespace ToDoList.DAL
 		{
 			job.Id = GetLastId() + 1;
 			job.Checked = false;
-
-			memoryDAO.jobs.Add(job);
-
+			db.jobs.Add(job);
 			return job.Id;
 		}
 
@@ -43,8 +37,7 @@ namespace ToDoList.DAL
 		/// <param name="id">Id задачи</param>
 		public int Delete(int id)
 		{
-			memoryDAO.jobs.Remove(GetById(id));
-
+			db.jobs.Remove(GetById(id));
 			return id;
 		}
 
@@ -54,7 +47,7 @@ namespace ToDoList.DAL
 		/// <returns>Список задач</returns>
 		public IEnumerable<Job> GetAll()
 		{
-			return memoryDAO.jobs.ToList();
+			return db.jobs.ToList();
 		}
 
 		/// <summary>
@@ -64,7 +57,7 @@ namespace ToDoList.DAL
 		/// <returns>Задача</returns>
 		public Job GetByName(string name)
 		{
-			return memoryDAO.jobs.FirstOrDefault(item => item.Name == name);
+			return db.jobs.FirstOrDefault(item => item.Name == name);
 		}
 
 		/// <summary>
@@ -75,9 +68,7 @@ namespace ToDoList.DAL
 		public int CheckItem(int id, bool check)
 		{
 			var item = GetById(id);
-
 			item.Checked = check;
-
 			return id;
 		}
 
@@ -88,7 +79,7 @@ namespace ToDoList.DAL
 		/// <returns>Задача</returns>
 		public Job GetById(int id)
 		{
-			return memoryDAO.jobs.FirstOrDefault(item => item.Id == id);
+			return db.jobs.FirstOrDefault(item => item.Id == id);
 		}
 
 		/// <summary>
@@ -97,17 +88,19 @@ namespace ToDoList.DAL
 		/// <returns>Номер последней задачи в списке</returns>
 		private int GetLastId()
 		{
-			return (memoryDAO.jobs.Count == 0) ? 0 : memoryDAO.jobs.Max(item => item.Id);
+			return (db.jobs.Count == 0) ? 0 : db.jobs.Max(item => item.Id);
 		}
 
-		//public async Task PullData(string baseLocation)
-		//{
-		//	await memoryDAO.GetAllFromFile(baseLocation);
-		//}
-
-		//public async Task PushData(string baseLocation)
-		//{
-		//	await memoryDAO.SetAllToFile(baseLocation);
-		//}
+		/// <summary>
+		/// Обеспечение сохранения данных
+		/// </summary>
+		public void Save()
+		{
+			using (StreamWriter sw = new StreamWriter(db.fileLocation))
+			{
+				string json = JsonConvert.SerializeObject(db.jobs, Formatting.Indented);
+				sw.Write(json);
+			}
+		}
 	}
 }

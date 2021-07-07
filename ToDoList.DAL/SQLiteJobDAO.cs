@@ -17,27 +17,27 @@ namespace ToDoList.DAL
 			this.db = db;
 		}
 
+		public int Create(Job job)
+		{
+			db.Jobs.Add(job);
+			Save();
+			return GetLastId();
+		}
+
 		public int CheckItem(int id, bool check)
 		{
 			Job job = GetById(id);
 			job.Checked = check;
 			db.Jobs.Update(job);
-			db.SaveChanges();
+			Save();
 			return job.Id;
-		}
-
-		public int Create(Job job)
-		{
-			db.Jobs.Add(job);
-			db.SaveChanges();
-			return GetLastId();
 		}
 
 		public int Delete(int id)
 		{
 			Job job = GetById(id);
 			db.Jobs.Remove(job);
-			db.SaveChanges();
+			Save();
 			return job.Id;
 		}
 
@@ -59,6 +59,11 @@ namespace ToDoList.DAL
 		private int GetLastId()
 		{
 			return db.Jobs.Max(x => x.Id);
+		}
+
+		public void Save()
+		{
+			db.SaveChanges();
 		}
 	}
 }
