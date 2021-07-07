@@ -1,15 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using ToDoList.DAL.Interface;
 using ToDoList.Entities;
 
 namespace ToDoList.DAL
 {
-	/// <summary>
-	/// Объект под список задач
-	/// </summary>
-	public class JobDAO : IJobDAO
+	public class MemoryJobDAO : IJobDAO
 	{
+		/// <summary>
+		/// хранилище данных
+		/// </summary>
+		private MemoryContext db;
+
+		public MemoryJobDAO(MemoryContext db)
+		{
+			this.db = db;
+		}
+
 		/// <summary>
 		/// Создание задачи в листе
 		/// </summary>
@@ -18,9 +27,7 @@ namespace ToDoList.DAL
 		{
 			job.Id = GetLastId() + 1;
 			job.Checked = false;
-
-			MemoryDAO.jobs.Add(job);
-
+			db.jobs.Add(job);
 			return job.Id;
 		}
 
@@ -30,8 +37,7 @@ namespace ToDoList.DAL
 		/// <param name="id">Id задачи</param>
 		public int Delete(int id)
 		{
-			MemoryDAO.jobs.Remove(GetById(id));
-
+			db.jobs.Remove(GetById(id));
 			return id;
 		}
 
@@ -41,7 +47,7 @@ namespace ToDoList.DAL
 		/// <returns>Список задач</returns>
 		public IEnumerable<Job> GetAll()
 		{
-			return MemoryDAO.jobs.ToList();
+			return db.jobs.ToList();
 		}
 
 		/// <summary>
@@ -51,7 +57,7 @@ namespace ToDoList.DAL
 		/// <returns>Задача</returns>
 		public Job GetByName(string name)
 		{
-			return MemoryDAO.jobs.FirstOrDefault(item => item.Name == name);
+			return db.jobs.FirstOrDefault(item => item.Name == name);
 		}
 
 		/// <summary>
@@ -62,9 +68,7 @@ namespace ToDoList.DAL
 		public int CheckItem(int id, bool check)
 		{
 			var item = GetById(id);
-
 			item.Checked = check;
-
 			return id;
 		}
 
@@ -75,7 +79,7 @@ namespace ToDoList.DAL
 		/// <returns>Задача</returns>
 		public Job GetById(int id)
 		{
-			return MemoryDAO.jobs.FirstOrDefault(item => item.Id == id);
+			return db.jobs.FirstOrDefault(item => item.Id == id);
 		}
 
 		/// <summary>
@@ -84,7 +88,19 @@ namespace ToDoList.DAL
 		/// <returns>Номер последней задачи в списке</returns>
 		private int GetLastId()
 		{
-			return (MemoryDAO.jobs.Count == 0) ? 0 : MemoryDAO.jobs.Max(item => item.Id);
+			return (db.jobs.Count == 0) ? 0 : db.jobs.Max(item => item.Id);
+		}
+
+		/// <summary>
+		/// Обеспечение сохранения данных
+		/// </summary>
+		public void Save()
+		{
+			using (StreamWriter sw = new StreamWriter(db.fileLocation))
+			{
+				string json = JsonConvert.SerializeObject(db.jobs, Formatting.Indented);
+				sw.Write(json);
+			}
 		}
 	}
 }

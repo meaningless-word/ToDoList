@@ -1,4 +1,6 @@
-﻿namespace ToDoList.Entities
+﻿using System;
+
+namespace ToDoList.Entities
 {
 	/// <summary>
 	/// Сущность задачи
@@ -29,5 +31,10 @@
 		/// Признак исполнения
 		/// </summary>
 		public bool Checked { get; set; }
+
+		/// <summary>
+		/// Дата окончания срока выполнения задания
+		/// </summary>
+		public DateTime ExpireDate { get; set; }
 	}
 }

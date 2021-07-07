@@ -1,4 +1,6 @@
-﻿namespace ToDoList.BLL.Entities
+﻿using System;
+
+namespace ToDoList.BLL.Entities
 {
 	/// <summary>
 	/// Вводимые параметры из UI
@@ -19,5 +21,9 @@
 		/// Описание задачи
 		/// </summary>
 		public string Text { get; set; }
+		/// <summary>
+		/// Дата истечения срока исполнения
+		/// </summary>
+		public DateTime ExpireDate { get; set; }
 	}
 }
