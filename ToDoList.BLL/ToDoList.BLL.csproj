@@ -8,6 +8,7 @@
     <ProjectReference Include="..\ToDoList.BLL.Interface\ToDoList.BLL.Interface.csproj" />
     <ProjectReference Include="..\ToDoList.DAL.Interface\ToDoList.DAL.Interface.csproj" />
     <ProjectReference Include="..\ToDoList.Exceptions\ToDoList.Exceptions.csproj" />
+    <ProjectReference Include="..\ToDoListCommon\ToDoListCommon.csproj" />
   </ItemGroup>
 
 </Project>

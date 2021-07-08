@@ -26,7 +26,7 @@ namespace ToDoList.PL.Views
 			Console.WriteLine("{0}:{1}:{2}:{3}:{4}:{5}", "наименование".PadRight(30, '.'), "текст".PadRight(50, '.'), "срок".PadRight(10, '.'), "приоритет.", "[v]", "Id".PadRight(6, '.'));
 			tasks.ToList().ForEach(x =>
 			{
-				Console.WriteLine("{0,-30}:{1,-50}:{2,10}:{3,10}:{4,3}:{5,6}", x.Name, x.Text, x.ExpiredDate.ToString("dd.MM.yyyy", DateTimeFormatInfo.InvariantInfo), x.Priority, x.Checked ? "[v]" : "[.]", x.Id);
+				Console.WriteLine("{0,-30}:{1,-50}:{2,10}:{3,10}:{4,3}:{5,6}", x.Name, x.Text, x.ExpireDate.ToString("dd.MM.yyyy", DateTimeFormatInfo.InvariantInfo), x.Priority, x.Checked ? "[v]" : "[.]", x.Id);
 			});
 		}
 	}

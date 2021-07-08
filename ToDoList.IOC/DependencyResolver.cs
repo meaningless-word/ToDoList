@@ -5,6 +5,7 @@ using ToDoList.BLL.Interface;
 using ToDoList.DAL;
 using ToDoList.DAL.Interface;
 using ToDoList.Entities.Configuration;
+using ToDoListCommon;
 
 namespace ToDoList.IOC
 {
@@ -14,6 +15,7 @@ namespace ToDoList.IOC
 	public class DependencyResolver
 	{
 		private IBaseRepository baseRepository;
+		public IPublicCache _publicCache;
 
 		/// <summary>
 		/// Объект под бизнес-логику
@@ -23,7 +25,8 @@ namespace ToDoList.IOC
 		public DependencyResolver(ConfigurationDAL configurationDAL)
 		{
 			baseRepository = GetBaseRepositoryByType(configurationDAL);
-			toDoListLogic = new ToDoListLogic(baseRepository.jobDAO);
+			_publicCache = new PublicCache();
+			toDoListLogic = new ToDoListLogic(baseRepository.jobDAO, _publicCache);
 		}
 
 		private IBaseRepository GetBaseRepositoryByType(ConfigurationDAL configurationDAL)
