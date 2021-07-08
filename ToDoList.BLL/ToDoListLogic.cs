@@ -6,6 +6,7 @@ using ToDoList.BLL.Interface;
 using ToDoList.DAL.Interface;
 using ToDoList.Entities;
 using ToDoList.Exceptions;
+using ToDoListCommon;
 
 namespace ToDoList.BLL
 {
@@ -17,15 +18,22 @@ namespace ToDoList.BLL
 		/// <summary>
 		/// Интерфейс списка задач
 		/// </summary>
-		private readonly IJobDAO _jobDAL;
+		private readonly IJobDAO _jobDAO;
+		/// <summary>
+		/// интерфейс кэширования
+		/// </summary>
+		private readonly IPublicCache _publicCache;
+
+		private const string CACHE_KEY_JOB = "CACHE_KEY_JOB";
 
 		/// <summary>
 		/// Конструктор бизнес-логики
 		/// </summary>
 		/// <param name="toDoListDAL">Интерфейс списка задач</param>
-		public ToDoListLogic(IJobDAO jobDAL)
+		public ToDoListLogic(IJobDAO jobDAO, IPublicCache publicCache)
 		{
-			_jobDAL = jobDAL;
+			_jobDAO = jobDAO;
+			_publicCache = publicCache;
 		}
 
 		/// <summary>
@@ -54,8 +62,11 @@ namespace ToDoList.BLL
 				ExpireDate = itemCreated.ExpireDate
 			};
 
-			if (_jobDAL.Create(job) == 0)
+			if (_jobDAO.Create(job) == 0)
 				throw new Exception();
+
+			// после добавления записи кэш уже не свеж - зачищаем его
+			_publicCache.Reset(CACHE_KEY_JOB);
 		}
 
 		/// <summary>
@@ -67,8 +78,11 @@ namespace ToDoList.BLL
 			if (!CheckId(id))
 				throw new InfoIsNotValidException();
 
-			if (_jobDAL.Delete(id) == 0)
+			if (_jobDAO.Delete(id) == 0)
 				throw new Exception();
+
+			// после удаления записи кэш уже не свеж - зачищаем его
+			_publicCache.Reset(CACHE_KEY_JOB);
 		}
 
 		/// <summary>
@@ -77,7 +91,9 @@ namespace ToDoList.BLL
 		/// <returns>Список задач</returns>
 		public IEnumerable<ItemDelivered> GetAll()
 		{
-			return _jobDAL.GetAll().Select(x => new ItemDelivered() { Id = x.Id, Name = x.Name, Text = x.Text, Priority = x.Priority, Checked = x.Checked, ExpiredDate = x.ExpireDate }).ToList();
+			// запрос всех записей проходит через кэш. если он есть, записи будут получены из него, если нет, то сначала закэшируются, затем получены
+			return _publicCache.GetOrCreate(CACHE_KEY_JOB, () => _jobDAO.GetAll())
+				.Select(x => new ItemDelivered() { Id = x.Id, Name = x.Name, Text = x.Text, Priority = x.Priority, Checked = x.Checked, ExpiredDate = x.ExpireDate }).ToList();
 		}
 
 		/// <summary>
@@ -100,7 +116,10 @@ namespace ToDoList.BLL
 		/// <returns>Задача</returns>
 		public ItemDelivered GetById(int id)
 		{
-			var item = _jobDAL.GetById(id);
+			// до кэнирования запрашивалась запись непосредственно из базы через метод из DAO
+			// var item = _jobDосвежAO.GetById(id);
+			// теперь из всего кэша, а чтоб не повторяться - из текущего метода GetAll
+			var item = GetAll().FirstOrDefault(x => x.Id == id);
 
 			if (item == null)
 				throw new InfoIsNotValidException();
@@ -115,7 +134,7 @@ namespace ToDoList.BLL
 		/// <returns>Задача</returns>
 		public ItemDelivered GetByName(string name)
 		{
-			var item = _jobDAL.GetByName(name);
+			var item = _jobDAO.GetByName(name);
 
 			if (item == null)
 				throw new InfoIsNotValidException();
@@ -130,7 +149,7 @@ namespace ToDoList.BLL
 		/// <returns>список задач, содержащих фрагмент в наименовании</returns>
 		public IEnumerable<ItemDelivered> GetByPartOfName(string partOfName)
 		{
-			return _jobDAL.GetAll().Where(x => x.Name.Contains(partOfName)).Select(x => new ItemDelivered() { Id = x.Id, Name = x.Name, Text = x.Text, Priority = x.Priority, Checked = x.Checked, ExpiredDate = x.ExpireDate }).ToList();
+			return _jobDAO.GetAll().Where(x => x.Name.Contains(partOfName)).Select(x => new ItemDelivered() { Id = x.Id, Name = x.Name, Text = x.Text, Priority = x.Priority, Checked = x.Checked, ExpiredDate = x.ExpireDate }).ToList();
 		}
 
 		/// <summary>
@@ -140,7 +159,7 @@ namespace ToDoList.BLL
 		/// <returns>список задач, содержащих фрагмент в тексте</returns>
 		public IEnumerable<ItemDelivered> GetByPartOfText(string partOfText)
 		{
-			return _jobDAL.GetAll().Where(x => x.Text.Contains(partOfText)).Select(x => new ItemDelivered() { Id = x.Id, Name = x.Name, Text = x.Text, Priority = x.Priority, Checked = x.Checked, ExpiredDate = x.ExpireDate }).ToList();
+			return _jobDAO.GetAll().Where(x => x.Text.Contains(partOfText)).Select(x => new ItemDelivered() { Id = x.Id, Name = x.Name, Text = x.Text, Priority = x.Priority, Checked = x.Checked, ExpiredDate = x.ExpireDate }).ToList();
 		}
 
 		/// <summary>
@@ -153,7 +172,7 @@ namespace ToDoList.BLL
 			if (!CheckId(id))
 				throw new InfoIsNotValidException();
 
-			if (_jobDAL.CheckItem(id, check) == 0)
+			if (_jobDAO.CheckItem(id, check) == 0)
 				throw new Exception();
 		}
 
@@ -164,7 +183,7 @@ namespace ToDoList.BLL
 		/// <returns>Признак существования задачи</returns>
 		private bool CheckId(int id)
 		{
-			var item = _jobDAL.GetById(id);
+			var item = _jobDAO.GetById(id);
 
 			if (item == null)
 				return false;
@@ -177,7 +196,7 @@ namespace ToDoList.BLL
 		/// </summary>
 		public void Save()
 		{
-			_jobDAL.Save();
+			_jobDAO.Save();
 		}
 	}
 }
