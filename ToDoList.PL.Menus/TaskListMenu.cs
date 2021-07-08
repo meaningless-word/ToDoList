@@ -19,6 +19,7 @@ namespace ToDoList.PL.Menus
 			menuItems = new List<string>()
 			{
 				"Полный",
+				"Полный (с учетом приоритета)",
 				"Невыполненные (по убыванию приоритета)",
 				"Выполненные"
 			};
@@ -44,11 +45,17 @@ namespace ToDoList.PL.Menus
 						}
 					case "2":
 						{
-							var doRead = new TasksView(_toDoListLogic.GetAllSortedByPriority(false).Where(x => !x.Checked));
+							var doRead = new TasksView(_toDoListLogic.GetAllSortedByPriority(true));
 							doRead.Show();
 							break;
 						}
 					case "3":
+						{
+							var doRead = new TasksView(_toDoListLogic.GetAllSortedByPriority(false).Where(x => !x.Checked));
+							doRead.Show();
+							break;
+						}
+					case "4":
 						{
 							var doRead = new TasksView(_toDoListLogic.GetAll().Where(x => x.Checked));
 							doRead.Show();

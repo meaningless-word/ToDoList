@@ -31,6 +31,6 @@ namespace ToDoList.BLL.Entities
 		/// <summary>
 		/// Дата истечения срока исполнения
 		/// </summary>
-		public DateTime ExpiredDate { get; set; }
+		public DateTime ExpireDate { get; set; }
 	}
 }
