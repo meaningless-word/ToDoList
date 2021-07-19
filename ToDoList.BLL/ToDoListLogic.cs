@@ -93,7 +93,15 @@ namespace ToDoList.BLL
 		{
 			// запрос всех записей проходит через кэш. если он есть, записи будут получены из него, если нет, то сначала закэшируются, затем получены
 			return _publicCache.GetOrCreate(CACHE_KEY_JOB, () => _jobDAO.GetAll())
-				.Select(x => new ItemDelivered() { Id = x.Id, Name = x.Name, Text = x.Text, Priority = x.Priority, Checked = x.Checked, ExpireDate = x.ExpireDate }).ToList();
+				.Select(x => new ItemDelivered() 
+				{ 
+					Id = x.Id, 
+					Name = x.Name, 
+					Text = x.Text, 
+					Priority = x.Priority, 
+					Checked = x.Checked, 
+					ExpireDate = x.ExpireDate 
+				}).ToList();
 		}
 
 		/// <summary>
@@ -124,7 +132,14 @@ namespace ToDoList.BLL
 			if (item == null)
 				throw new InfoIsNotValidException();
 
-			return new ItemDelivered() { Id = item.Id, Name = item.Name, Text = item.Text, Priority = item.Priority, Checked = item.Checked, ExpireDate = item.ExpireDate };
+			return new ItemDelivered() { 
+				Id = item.Id, 
+				Name = item.Name, 
+				Text = item.Text, 
+				Priority = item.Priority, 
+				Checked = item.Checked, 
+				ExpireDate = item.ExpireDate 
+			};
 		}
 
 		/// <summary>
@@ -142,7 +157,15 @@ namespace ToDoList.BLL
 			if (item == null)
 				throw new InfoIsNotValidException();
 
-			return new ItemDelivered() { Id = item.Id, Name = item.Name, Text = item.Text, Priority = item.Priority, Checked = item.Checked, ExpireDate = item.ExpireDate };
+			return new ItemDelivered()
+			{
+				Id = item.Id,
+				Name = item.Name,
+				Text = item.Text,
+				Priority = item.Priority,
+				Checked = item.Checked,
+				ExpireDate = item.ExpireDate
+			};
 		}
 
 		/// <summary>
@@ -152,7 +175,14 @@ namespace ToDoList.BLL
 		/// <returns>список задач, содержащих фрагмент в наименовании</returns>
 		public IEnumerable<ItemDelivered> GetByPartOfName(string partOfName)
 		{
-			return GetAll().Where(x => x.Name.Contains(partOfName)).Select(x => new ItemDelivered() { Id = x.Id, Name = x.Name, Text = x.Text, Priority = x.Priority, Checked = x.Checked, ExpireDate = x.ExpireDate }).ToList();
+			return GetAll().Where(x => x.Name.Contains(partOfName)).Select(x => new ItemDelivered() { 
+				Id = x.Id, 
+				Name = x.Name, 
+				Text = x.Text, 
+				Priority = x.Priority, 
+				Checked = x.Checked, 
+				ExpireDate = x.ExpireDate 
+			}).ToList();
 		}
 
 		/// <summary>
@@ -162,7 +192,14 @@ namespace ToDoList.BLL
 		/// <returns>список задач, содержащих фрагмент в тексте</returns>
 		public IEnumerable<ItemDelivered> GetByPartOfText(string partOfText)
 		{
-			return GetAll().Where(x => x.Text.Contains(partOfText)).Select(x => new ItemDelivered() { Id = x.Id, Name = x.Name, Text = x.Text, Priority = x.Priority, Checked = x.Checked, ExpireDate = x.ExpireDate }).ToList();
+			return GetAll().Where(x => x.Text.Contains(partOfText)).Select(x => new ItemDelivered() { 
+				Id = x.Id, 
+				Name = x.Name, 
+				Text = x.Text, 
+				Priority = x.Priority, 
+				Checked = x.Checked, 
+				ExpireDate = x.ExpireDate 
+			}).ToList();
 		}
 
 		/// <summary>
@@ -191,10 +228,7 @@ namespace ToDoList.BLL
 		{
 			var item = GetById(id);
 
-			if (item == null)
-				return false;
-
-			return true;
+			return item != null;
 		}
 
 		/// <summary>
